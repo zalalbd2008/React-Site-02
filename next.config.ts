@@ -10,8 +10,11 @@ import type { NextConfig } from "next";
  */
 const isStaticExport = process.env.STATIC_EXPORT === "1";
 
+// On Vercel the platform manages the output itself; the standalone bundle is only for the self-hosted VPS.
+const onVercel = process.env.VERCEL === "1";
+
 const nextConfig: NextConfig = {
-  output: isStaticExport ? "export" : "standalone",
+  output: isStaticExport ? "export" : onVercel ? undefined : "standalone",
   trailingSlash: true, // preserves the existing WordPress URL style (/branding/)
   reactStrictMode: true,
   poweredByHeader: false,
